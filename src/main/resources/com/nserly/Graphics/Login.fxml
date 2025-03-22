@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="187.0" prefWidth="433.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nserly.Graphics.Login">
+   <children>
+      <Button layoutX="192.0" layoutY="116.0" mnemonicParsing="false" onAction="#Login" text="Login" />
+      <Label alignment="CENTER" layoutX="24.0" layoutY="66.0" prefHeight="39.0" prefWidth="144.0" text="模型" />
+      <TextField id="APIKey" fx:id="APIKey" layoutX="161.0" layoutY="35.0" prefHeight="23.0" prefWidth="202.0" />
+      <Label alignment="CENTER" layoutX="24.0" layoutY="27.0" prefHeight="39.0" prefWidth="144.0" text="API Key" />
+      <ChoiceBox fx:id="Model" layoutX="161.0" layoutY="74.0" onMousePressed="#ModelClicked" prefHeight="23.0" prefWidth="202.0" />
+   </children>
+</AnchorPane>

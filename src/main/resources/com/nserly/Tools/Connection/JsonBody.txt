@@ -1,0 +1,1 @@
+{"model": "/*model*/","messages": [{"role": "user", "content": "/*content*/"}],"stream": true,"temperature": /*temperature*/}}
