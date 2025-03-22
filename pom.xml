@@ -25,7 +25,12 @@
             <artifactId>gson</artifactId>
             <version>2.12.1</version>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/org.commonmark/commonmark -->
+        <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark</artifactId>
+            <version>0.24.0</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>

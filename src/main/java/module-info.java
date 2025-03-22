@@ -16,6 +16,7 @@ module com.nserly.largemodelconnectors {
     requires org.slf4j;
     requires java.desktop;
     requires com.google.gson;
+    requires org.commonmark;
 
     opens com.nserly.Graphics to javafx.fxml;
     opens com.nserly.Tools.Connection.MessageCollections to com.google.gson;

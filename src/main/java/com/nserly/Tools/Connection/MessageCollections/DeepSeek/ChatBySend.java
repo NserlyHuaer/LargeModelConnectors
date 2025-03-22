@@ -27,6 +27,8 @@ public class ChatBySend extends SuperSend {
     @Setter
     //介于 -2.0 和 2.0 之间的数字
     private double presence_penalty;
+
+
     @Setter
     //一个 string 或最多包含 16 个 string 的 list，在遇到这些词时，API 将停止生成更多的 token。
     private ArrayList<String> stop;
