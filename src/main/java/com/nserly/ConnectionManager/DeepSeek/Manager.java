@@ -3,7 +3,6 @@ package com.nserly.ConnectionManager.DeepSeek;
 import com.nserly.Tools.Connection.Connection;
 import com.nserly.Tools.Connection.MessageCollections.DeepSeek.CheckBalanceByReceive;
 import com.nserly.Tools.Connection.MessageCollections.DeepSeek.GetModelByReceive;
-import com.nserly.Tools.Connection.MessageCollections.SuperReceive;
 import com.nserly.Tools.Connection.Sender;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +27,14 @@ public class Manager {
     public static final String ModelsAddress = "https://api.deepseek.com/models";
 
     public static final String ConnectionAddress = "https://api.deepseek.com/v1/chat/completions";
+
+    public static final ArrayList<String> UsualModels;
+
+    static {
+        UsualModels = new ArrayList<>();
+        UsualModels.add("deepseek-chat");
+        UsualModels.add("deepseek-reasoner");
+    }
 
 
     public Manager(String API_Key, Callback callback) {
@@ -57,11 +64,6 @@ public class Manager {
 
     public CheckBalanceByReceive.Balance_infos getBalance() throws IOException {
         if (connection == null) return null;
-//        Request request = new Request.Builder()
-//                .url("https://api.deepseek.com/user/balance")
-//                .get()
-//                .addHeader("Authorization", "Bearer " + ServerAPI)
-//                .build();
         Request request = Sender.getRequestOnGet(BalanceAddress, new Header("Authorization", "Bearer " + sender.getAPI_Key()));
         try (Response response = connection.sendByCurrentThread(request)) {
             String responseBody = response.body().string();

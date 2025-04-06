@@ -10,21 +10,33 @@ import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Init<KEY, VALUE> {
+    private static final String[] createDirectory = {"data", "data/chat", "cache", "download"};
+    private static final String[] createFile = {"data/chat/chatInfo.obj"};
+
+    private static final String[] cleanDirectoryOrFile = {};
+
     private static final AtomicBoolean isInit = new AtomicBoolean();
     private static final Map DefaultMap = new HashMap<>();
     private final File f;
     private final Properties properties = new Properties();
     private boolean EnableAutoUpdate;
-    private static final String[] createDirectory = {"data", "cache", "download"};
     private static final Logger logger = LoggerFactory.getLogger(Init.class);
 
-    public static final String[] args = {"ServerAddress", "ServerAPI", "Temperature"};
 
     public Init() throws IOException {
         f = new File("data/configuration.ch");
         if ((!f.exists()) || !f.isFile()) {
             f.createNewFile();
         }
+    }
+
+    public void InitializeNoneValue(HashMap<KEY, VALUE> DefaultValue) {
+        Run();
+        DefaultValue.keySet().forEach(e -> {
+            if (!containsKey(e)) {
+                ChangeValue(e, DefaultValue.get(e));
+            }
+        });
     }
 
     public Init(File savePath) throws IOException {
@@ -45,20 +57,25 @@ public class Init<KEY, VALUE> {
         synchronized (isInit) {
             if (isInit.get()) return;
             File dire;
+            File file;
             for (String directory : createDirectory) {
                 dire = new File(directory);
                 if (!dire.exists()) {
                     dire.mkdir();
                 }
             }
-            clearDirectory(new File("./download/"));
-            clearDirectory(new File("replace.sh"));
-            clearDirectory(new File("replace.bat"));
-            clearDirectory(new File("runnable.bat"));
-            isInit.set(true);
-            for (String i : args) {
-                DefaultMap.put(i, "");
+            for (String clean : cleanDirectoryOrFile) {
+                clearDirectory(new File(clean));
             }
+            for (String FilePath : createFile) {
+                file = new File(FilePath);
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    logger.error(e.getMessage());
+                }
+            }
+            isInit.set(true);
         }
     }
 

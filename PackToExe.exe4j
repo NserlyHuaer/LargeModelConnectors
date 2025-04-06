@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<exe4j version="8.0" transformSequenceNumber="3">
+  <directoryPresets config="D:/javaProject/LargeModelConnectors/LargeModelConnectors/target" />
+  <application name="LargeModelConnectors-JavaFX" distributionSourceDir="D:/javaProject/LargeModelConnectors/LargeModelConnectors/artifacts/LargeModelConnectors/JavaFX" />
+  <executable name="LargeModelConnectors" wrapperType="embed" executableDir="." executableMode="gui" />
+  <java mainClass="com.nserly.MainJavaFXRunner" minVersion="21" maxVersion="24">
+    <classPath>
+      <archive location="D:/javaProject/LargeModelConnectors/LargeModelConnectors/target/LargeModelConnectors-1.0-SNAPSHOT-jar-with-dependencies.jar" failOnError="false" />
+    </classPath>
+  </java>
+</exe4j>

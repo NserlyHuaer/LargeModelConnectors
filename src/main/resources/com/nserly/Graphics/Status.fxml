@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="671.0" prefWidth="1125.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nserly.Controller.StatusController">
+   <top>
+      <GridPane prefHeight="36.0" prefWidth="1027.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="27.0" minHeight="2.0" prefHeight="3.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label text="状态">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Line endX="27.7786865234375" opacity="0.5" startX="-360.51422119140625" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+         </children>
+      </GridPane>
+   </top>
+   <center>
+      <GridPane BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="555.0" minWidth="10.0" prefWidth="175.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="950.0" minWidth="10.0" prefWidth="950.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="260.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="390.0" minHeight="0.0" prefHeight="33.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="370.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="532.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="532.0" minHeight="0.0" prefHeight="33.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="532.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="532.0" minHeight="0.0" prefHeight="40.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="532.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="532.0" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="532.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="532.0" minHeight="10.0" prefHeight="250.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label prefHeight="29.0" prefWidth="172.0" text="绑定API Key：">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="APIKeyValueLabel" GridPane.columnIndex="1">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label prefHeight="35.0" prefWidth="154.0" text="当前设定温度：" GridPane.rowIndex="1">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="TemperatureValueLabel" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label prefHeight="32.0" prefWidth="131.0" text="当前聊天模型：" GridPane.rowIndex="2">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="CurrentModelValueLabel" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label text="当前剩余余额：" GridPane.rowIndex="4">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="CurrentTotalBalanceValueLabel" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label text="总消耗tokens：" GridPane.rowIndex="5">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="SpentTotalTokensValueLabel" GridPane.columnIndex="1" GridPane.rowIndex="5">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Button fx:id="RefreshInformationButton" mnemonicParsing="false" onAction="#RefreshInformation" prefHeight="23.0" prefWidth="72.0" text="刷新" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Label text="当前模型上下文数：" GridPane.rowIndex="3">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="CurrentModelConverstationsCountLabel" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </GridPane>
+   </center>
+</BorderPane>

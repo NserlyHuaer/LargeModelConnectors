@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.ToggleSwitch?>
+
+<ScrollPane fitToWidth="true" prefHeight="464.0" prefWidth="741.0" styleClass="settings-pane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nserly.Controller.SettingsController">
+   <BorderPane>
+      <center>
+      
+          <VBox prefWidth="600" spacing="20">
+              <!-- 用户信息模块 -->
+              <TitledPane styleClass="settings-group" text="账户设置" VBox.vgrow="SOMETIMES">
+                  <GridPane hgap="15" prefHeight="62.0" prefWidth="598.0" vgap="15">
+                      <Label prefHeight="15.0" prefWidth="76.0" styleClass="form-label" text="API Key：" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
+                      <TextField fx:id="APIKeyTypeFiled" prefHeight="23.0" prefWidth="508.0" styleClass="form-input" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
+                  <columnConstraints>
+                     <ColumnConstraints />
+                     <ColumnConstraints />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                  </rowConstraints>
+                  </GridPane>
+              </TitledPane>
+      
+              <!-- 主题切换模块 -->
+              <TitledPane styleClass="settings-group" text="聊天设置" VBox.vgrow="SOMETIMES">
+               <content>
+                  <GridPane prefHeight="108.0" prefWidth="713.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="30.0" prefWidth="50.0" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="20.0" prefWidth="0.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="每次启动时，自动开启新对话" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
+                        <ToggleSwitch fx:id="StartNewDialogueSwitch" prefHeight="18.0" prefWidth="11.0" GridPane.columnIndex="1" />
+                     </children>
+                  </GridPane>
+               </content>
+              </TitledPane>
+      
+              <!-- 系统设置模块 -->
+              <TitledPane styleClass="settings-group" text="模型设置" VBox.vgrow="SOMETIMES">
+                  <GridPane hgap="15" vgap="15">
+                      <Label styleClass="form-label" text="模型：" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
+                      <ComboBox fx:id="ModelComboBox" prefHeight="23.0" prefWidth="248.0" styleClass="form-combo" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                          <items>
+                              <FXCollections fx:factory="observableArrayList">
+                        </FXCollections>
+                          </items>
+                     <effect>
+                        <Glow />
+                     </effect>
+                      </ComboBox>
+      
+                      <Label styleClass="form-label" text="模型温度：" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
+                      <Slider fx:id="ModelTemperatureSlider" majorTickUnit="0.2" max="2.0" min="0" minorTickCount="1" showTickLabels="true" snapToTicks="true" styleClass="form-slider" value="1.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
+                  <Button fx:id="RefreshModelListsButton" mnemonicParsing="false" text="刷新" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
+                  <columnConstraints>
+                     <ColumnConstraints />
+                     <ColumnConstraints />
+                     <ColumnConstraints halignment="CENTER" minWidth="10.0" prefWidth="100.0" />
+                     <ColumnConstraints halignment="CENTER" minWidth="10.0" prefWidth="100.0" />
+                     <ColumnConstraints halignment="CENTER" minWidth="10.0" prefWidth="100.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints />
+                     <RowConstraints />
+                  </rowConstraints>
+                  </GridPane>
+              </TitledPane>
+      
+              <!-- 操作按钮 -->
+              <HBox alignment="CENTER_RIGHT" spacing="20" VBox.vgrow="NEVER">
+               <Button fx:id="setDefaultSettingsButton" mnemonicParsing="false" text="恢复默认设置" HBox.hgrow="NEVER" />
+                  <Button fx:id="setCurrentSettingsButton" styleClass="form-btn secondary" text="恢复当前设置" HBox.hgrow="NEVER" />
+                  <Button fx:id="SaveSettingsButton" styleClass="form-btn primary" text="保存设置" HBox.hgrow="NEVER" />
+              </HBox>
+          </VBox>
+      </center>
+      <top>
+         <GridPane prefHeight="36.0" prefWidth="1027.0">
+            <columnConstraints>
+               <ColumnConstraints hgrow="SOMETIMES" maxWidth="1027.0" minWidth="10.0" prefWidth="589.0" />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="27.0" minHeight="2.0" prefHeight="3.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+               <Label fx:id="ModelNameLabel" text="设置">
+                  <font>
+                     <Font size="18.0" />
+                  </font>
+               </Label>
+               <Line endX="27.7786865234375" opacity="0.5" startX="-360.51422119140625" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+            </children>
+         </GridPane>
+      </top>
+   </BorderPane>
+</ScrollPane>
