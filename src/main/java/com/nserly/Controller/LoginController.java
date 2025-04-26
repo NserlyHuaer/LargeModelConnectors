@@ -1,5 +1,6 @@
 package com.nserly.Controller;
 
+import com.nserly.Logger;
 import com.nserly.MainJavaFXRunner;
 import com.nserly.Tools.Connection.MessageCollections.DeepSeek.GetModelByReceive;
 import javafx.application.Platform;
@@ -67,7 +68,7 @@ public class LoginController implements Initializable {
                         }
                     });
                 } catch (IOException e) {
-                    log.error(e.getMessage());
+                    log.error(Logger.getExceptionMessage(e));
                 }
             }
             StartNewDialogue = StartNewDialogue.equalsIgnoreCase("true") ? "true" : "false";

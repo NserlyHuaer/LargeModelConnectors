@@ -15,7 +15,7 @@ public class FileManager {
         try (FileInputStream fileInputStream = new FileInputStream(path)) {
             content = new String(fileInputStream.readAllBytes());
         } catch (IOException ioException) {
-            log.error(ioException.getMessage());
+            log.error(com.nserly.Logger.getExceptionMessage(ioException));
         }
         return content;
     }

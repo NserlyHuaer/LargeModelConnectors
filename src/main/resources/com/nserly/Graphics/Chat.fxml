@@ -5,6 +5,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Line?>
@@ -20,7 +21,11 @@
             <Button fx:id="SenderButton" mnemonicParsing="false" onAction="#SendAction" prefHeight="40.0" prefWidth="71.0" text="发送" BorderPane.alignment="BOTTOM_RIGHT" />
          </right>
          <top>
-            <Button fx:id="StartNewTopic" mnemonicParsing="false" onAction="#startNewTopicAction" prefHeight="28.0" text="开启新话题" BorderPane.alignment="CENTER" />
+            <FlowPane alignment="CENTER" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="StartNewTopic" mnemonicParsing="false" onAction="#startNewTopicAction" prefHeight="28.0" text="开启新话题" />
+               </children>
+            </FlowPane>
          </top>
       </BorderPane>
    </bottom>

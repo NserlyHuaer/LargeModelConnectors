@@ -6,6 +6,7 @@ import com.nserly.Tools.Connection.Sender;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -62,7 +63,7 @@ public class ChatBySend extends SuperSend {
     //发送信息内容
     @Setter
     @Getter
-    public static class ChatBySendMessage {
+    public static class ChatBySendMessage implements Serializable {
         private String content;
         private String role;
 

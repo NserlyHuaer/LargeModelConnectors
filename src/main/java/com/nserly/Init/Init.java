@@ -72,7 +72,7 @@ public class Init<KEY, VALUE> {
                 try {
                     file.createNewFile();
                 } catch (IOException e) {
-                    logger.error(e.getMessage());
+                    logger.error(com.nserly.Logger.getExceptionMessage(e));
                 }
             }
             isInit.set(true);

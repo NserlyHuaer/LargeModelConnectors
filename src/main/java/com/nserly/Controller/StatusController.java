@@ -2,6 +2,7 @@ package com.nserly.Controller;
 
 import com.nserly.Graphics.AlertLikeJOptionPane;
 import com.nserly.Graphics.ChatFiled;
+import com.nserly.Logger;
 import com.nserly.MainJavaFXRunner;
 import com.nserly.Tools.Connection.MessageCollections.DeepSeek.ChatBySend;
 import com.nserly.Tools.Connection.MessageCollections.DeepSeek.CheckBalanceByReceive;
@@ -66,7 +67,7 @@ public class StatusController implements Initializable {
             CheckBalanceByReceive.Balance_infos balance_infos = MainJavaFXRunner.mainJavaFXRunner.manager.getBalance();
             CurrentTotalBalanceValueLabel.setText(balance_infos.getTotal_balance() + " " + balance_infos.getCurrency());
         } catch (IOException ex) {
-            log.error(ex.getMessage());
+            log.error(Logger.getExceptionMessage(ex));
         }
     }
 }

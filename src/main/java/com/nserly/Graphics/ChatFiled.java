@@ -1,6 +1,8 @@
 package com.nserly.Graphics;
 
 import com.google.gson.JsonSyntaxException;
+import com.nserly.Controller.ChatController;
+import com.nserly.Logger;
 import com.nserly.MainJavaFXRunner;
 import com.nserly.Tools.Connection.MessageCollections.DeepSeek.ChatBySend;
 import com.nserly.Tools.Connection.MessageCollections.DeepSeek.FlowChatByReceive;
@@ -20,10 +22,11 @@ import java.util.ArrayList;
 @Slf4j
 public class ChatFiled extends JTextPane {
     private transient StringBuffer currentGenerateContent;
+    @Getter
     private final ArrayList<ChatBySend.ChatBySendMessage> messages;
     private transient boolean isThink;
     private transient long startToThinkTime;
-    private transient StyledDocument doc;
+    private StyledDocument doc;
 
     private transient int Font_Styles;
     //正常
@@ -52,12 +55,20 @@ public class ChatFiled extends JTextPane {
     @Getter
     private String model;
 
+
     private void init() {
         doc = getStyledDocument();
         setEditable(false);
         setFont(new Font("", 0, 15));
         DefaultCaret defaultCaret = (DefaultCaret) getCaret();
         defaultCaret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+    }
+
+    public boolean CheckIsComplete() {
+        if (messages == null) return false;
+        if (doc == null) return false;
+        if (getModel() == null) return false;
+        return true;
     }
 
     /**
@@ -84,6 +95,7 @@ public class ChatFiled extends JTextPane {
         messages.clear();
         if (!isClear)
             insertText("\n---------以下为新对话---------\n", Color.blue, getFont().getSize() + 5, StyleConstants.ALIGN_CENTER);
+
     }
 
     public void clearChatFiled() {
@@ -112,15 +124,13 @@ public class ChatFiled extends JTextPane {
         try {
             doc.insertString(doc.getLength(), text, set);//插入文本
         } catch (BadLocationException e) {
-            log.error(e.getMessage());
+            log.error(Logger.getExceptionMessage(e));
         }
     }
 
     private void handle(String message) {
         currentGenerateContent = new StringBuffer();
         messages.add(new ChatBySend.ChatBySendMessage(message, "user"));
-        MainJavaFXRunner.mainJavaFXRunner.chatBySend.setMessages(messages);
-        MainJavaFXRunner.mainJavaFXRunner.chatBySend.setModel(model);
         try (Response response = MainJavaFXRunner.mainJavaFXRunner.connection.sendByCurrentThread(MainJavaFXRunner.mainJavaFXRunner.manager.getSender().getRequest(MainJavaFXRunner.mainJavaFXRunner.chatBySend))) {
             if (!response.isSuccessful()) {
                 System.err.print("响应错误:");
@@ -142,6 +152,7 @@ public class ChatFiled extends JTextPane {
                     default ->
                             insertText("未知错误（" + response.code() + "）\n", Color.RED, getFont().getSize(), StyleConstants.ALIGN_LEFT);
                 }
+                doWorkAfterAnswering();
                 return;
             }
 
@@ -157,6 +168,7 @@ public class ChatFiled extends JTextPane {
                         if (json.equals("[DONE]")) {
                             insertText("[流结束]\n", Color.GRAY, getFont().getSize(), StyleConstants.ALIGN_LEFT);
                             messages.add(new ChatBySend.ChatBySendMessage(currentGenerateContent.toString(), "assistant"));
+                            doWorkAfterAnswering();
                             continue;
                         }
                         // 6. 解析JSON内容（示例使用简单解析，生产环境建议用Gson/Jackson）
@@ -164,13 +176,20 @@ public class ChatFiled extends JTextPane {
                     }
                 }
             } catch (Exception e) {
-                log.error(e.getMessage());
+                log.error(Logger.getExceptionMessage(e));
             } finally {
                 response.close(); // 确保释放资源
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void doWorkAfterAnswering() {
+        SwingUtilities.invokeLater(() -> {
+            ChatController chatController = MainJavaFXRunner.mainJavaFXRunner.Chat.getController();
+            chatController.saveObjectToFile(ChatController.file);
+        });
     }
 
     private void parseAndPrintContent(String json) {
@@ -209,10 +228,12 @@ public class ChatFiled extends JTextPane {
 
                 spentTotalTokensInThisObject += total_tokens;
                 spentTotalTokensInThisClass += total_tokens;
+
+
             }
             handleContentUpdates(Reasoning_content, Content);
         } catch (JsonSyntaxException e) {
-            log.error(e.getMessage());
+            log.error(Logger.getExceptionMessage(e));
         }
     }
 
@@ -239,34 +260,7 @@ public class ChatFiled extends JTextPane {
                 }
                 isThink = false;
             }
-//            if (content.contains("---")) {
-//                content.replace("---", "\n");
-//                insertText(content, Color.BLACK, Font_UnderLine, ChatFiled.getFont().getSize() + Font_Size, StyleConstants.ALIGN_LEFT);
-//                currentGenerateContent.append(content);
-//                Font_Size = NORMAL;
-//                return;
-//            }
-//            if (content.contains("#")) {
-//                int title = content.lastIndexOf('#') - content.indexOf('#') + 1;
-//                switch (title) {
-//                    case 1 -> Font_Size = FirstTitle;
-//                    case 2 -> Font_Size = SecondTitle;
-//                    case 3 -> Font_Size = ThirdTitle;
-//                    case 4 -> Font_Size = FourthTitle;
-//                    case 5 -> Font_Size = FifthTitle;
-//                    case 6 -> Font_Size = SixthTitle;
-//                }
-//            }
-//            content = content.replace("* ", "· ");
-//            content = content.replace("_", "*");
-//            if (content.contains("*")) {
-//                int count = content.lastIndexOf('*') - content.indexOf('*') + 1;
-//                switch (count) {
-//                    case 1 -> Font_Styles = Font_italic;
-//                    case 2 -> Font_Styles = Font_Bold;
-//                    case 3 -> Font_Styles = Font_BoldItalics;
-//                }
-//            }
+
             if (content.contains("\n\n")) {
                 Font_Styles = Font_Normal;
                 Font_Size = 0;

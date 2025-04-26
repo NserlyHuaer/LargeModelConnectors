@@ -130,7 +130,7 @@ public class MainConsoleRunner {
                 Temperature = "1";
             }
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            System.err.println(Logger.getExceptionMessage(e));
         }
         init.Loading();
         scanner = new Scanner(System.in);
@@ -179,7 +179,7 @@ public class MainConsoleRunner {
                     }
                 }
             } catch (Exception e) {
-                System.err.println("流处理异常: " + e.getMessage());
+                System.err.println(Logger.getExceptionMessage(e));
             } finally {
                 response.close(); // 确保释放资源
             }

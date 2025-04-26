@@ -1,6 +1,7 @@
 package com.nserly;
 
 import com.nserly.ConnectionManager.DeepSeek.Manager;
+import com.nserly.Controller.ChatController;
 import com.nserly.Controller.LoginController;
 import com.nserly.Controller.MainController;
 import com.nserly.Init.Init;
@@ -48,6 +49,7 @@ public class MainJavaFXRunner extends Application {
     public static final HashMap<String, String> DEFAULT_SETTINGS_VALUE;
 
     static {
+        Logger.setUncaughtExceptionHandler(log);
         DEFAULT_SETTINGS_VALUE = new HashMap<>();
         DEFAULT_SETTINGS_VALUE.put("Model", Manager.UsualModels.getFirst());
         DEFAULT_SETTINGS_VALUE.put("ServerAPI", "");
@@ -67,10 +69,20 @@ public class MainJavaFXRunner extends Application {
         stage.setScene(LoginScene);
         stage.setTitle("DeepSeek连接器（尝鲜版1.0）");
         stage.show();
+        stage.setOnCloseRequest(e -> {
+            ChatController chatController = Chat.getController();
+            chatController.saveObjectToFile(ChatController.file);
+            init.Update();
+            stage.close();
+            System.exit(0);
+        });
     }
 
     @Override
     public void init() throws Exception {
+        Platform.runLater(()->{
+            Logger.setUncaughtExceptionHandler(log);
+        });
         mainJavaFXRunner = this;
         Init.init();
         init = new Init<>("data/Information.properties");
@@ -85,7 +97,7 @@ public class MainJavaFXRunner extends Application {
                 ChatNode = Chat.load();
                 StatusNode = Status.load();
             } catch (IOException e) {
-                log.error(e.getMessage());
+                log.error(Logger.getExceptionMessage(e));
             }
         });
         super.init();

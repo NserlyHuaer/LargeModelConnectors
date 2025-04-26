@@ -3,8 +3,10 @@ package com.nserly.Controller;
 import com.nserly.ConnectionManager.DeepSeek.Manager;
 import com.nserly.Graphics.AlertLikeJOptionPane;
 import com.nserly.Graphics.ChatFiled;
+import com.nserly.Logger;
 import com.nserly.MainJavaFXRunner;
 import com.nserly.Tools.Connection.MessageCollections.DeepSeek.ChatBySend;
+import javafx.application.Platform;
 import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,11 +19,11 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.io.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.concurrent.FutureTask;
 
 
 @Slf4j
@@ -46,19 +48,25 @@ public class ChatController implements Initializable {
     //TreeMap(模型名称;ArrayList(ChatFiled;SwingNode;ArrayList<ChatBySend.ChatBySendMessage>))
     private TreeMap<String, ArrayList<Object>> chatList;
 
+    private boolean isNeedToSaveObject;
+
 
     private SwingNode lastSwingNode;
 
     public void setModel(String Model) {
         if (chatList.containsKey(Model) && Model.equals(getModel())) return;
         ModelNameLabel.setText(Model);
-        ChatArea.getChildren().remove(lastSwingNode);
         ChatFiled chatFiled = chatList.get(Model) == null ? null : (ChatFiled) chatList.get(Model).getFirst();
         SwingNode swingNode = chatList.get(Model) == null ? null : (SwingNode) chatList.get(Model).get(1);
+        if (chatFiled != null && !chatFiled.CheckIsComplete()) {
+            chatFiled = null;
+            chatList.remove(Model);
+        }
         if (chatFiled == null || swingNode == null) {
             ArrayList<Object> value = new ArrayList<>();
             ArrayList<ChatBySend.ChatBySendMessage> messages = new ArrayList<>();
-            chatFiled = new ChatFiled(Model, messages);
+            if (chatFiled == null)
+                chatFiled = new ChatFiled(Model, messages);
             swingNode = new SwingNode();
             swingNode.setContent(new JScrollPane(chatFiled));
             value.add(chatFiled);
@@ -66,8 +74,14 @@ public class ChatController implements Initializable {
             value.add(messages);
             chatList.put(Model, value);
         }
-        ChatArea.setCenter(swingNode);
+        SwingNode finalSwingNode = swingNode;
+        Platform.runLater(() -> {
+            ChatArea.getChildren().remove(lastSwingNode);
+            ChatArea.setCenter(finalSwingNode);
+        });
         lastSwingNode = swingNode;
+        MainJavaFXRunner.mainJavaFXRunner.chatBySend.setMessages(chatFiled.getMessages());
+        MainJavaFXRunner.mainJavaFXRunner.chatBySend.setModel(chatFiled.getModel());
     }
 
     public String getModel() {
@@ -76,6 +90,7 @@ public class ChatController implements Initializable {
 
     public void Send(String message) {
         ChatFiled chatFiled = (ChatFiled) chatList.get(getModel()).getFirst();
+        isNeedToSaveObject = true;
         if (chatFiled != null) {
             chatFiled.sender(message);
         }
@@ -94,7 +109,10 @@ public class ChatController implements Initializable {
     private void startNewTopicAction() {
         if (AlertLikeJOptionPane.showConfirmDialog(MainJavaFXRunner.mainJavaFXRunner.getStage(), "开启新对话？", "是否确定开启新对话？", "开启新对话", AlertLikeJOptionPane.YES_NO_OPTION) == AlertLikeJOptionPane.YES_OPTION) {
             ChatFiled chatFiled = (ChatFiled) chatList.get(ModelNameLabel.getText()).getFirst();
-            if (chatFiled != null) chatFiled.clearContent();
+            if (chatFiled != null) {
+                chatFiled.clearContent();
+                isNeedToSaveObject = true;
+            }
         }
     }
 
@@ -105,33 +123,76 @@ public class ChatController implements Initializable {
                 SendAction();
             }
         });
-        String Model = (String) MainJavaFXRunner.init.getValue("Model");
-        ModelNameLabel.setText((Model != null && !Model.isBlank()) ? Model : Manager.UsualModels.getFirst());
         chatList = new TreeMap<>();
+        readObjectFromFile(file);
 
-        if (MainJavaFXRunner.init.getValue("StartNewDialogue").toString().toLowerCase().equals("true"))
-            readObjectFromFile(file);
+        new Thread(() -> {
+            if (MainJavaFXRunner.init.getValue("StartNewDialogue").toString().toLowerCase().equals("true")) {
+                chatList.keySet().forEach(e -> {
+                    ArrayList<Object> arrayList = chatList.get(e);
+                    if (arrayList != null) {
+                        ChatFiled chatFiled = (ChatFiled) arrayList.getFirst();
+                        if (chatFiled != null) {
+                            isNeedToSaveObject = true;
+                            chatFiled.clearContent();
+                        }
+                    }
+                });
+            }
+        }).start();
+
     }
 
     public void saveObjectToFile(File file) {
+        if (!isNeedToSaveObject) return;
         if (!file.exists()) return;
+        log.info("Start Writing Object to File...");
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file))) {
-            objectOutputStream.writeObject(chatList);
+            ArrayList<Object> arrayList = new ArrayList<>();
+            Set<String> sets = chatList.keySet();
+            ArrayList<String> appeared = new ArrayList<>();
+            for (String set : sets) {
+                ChatFiled chatFiled = (ChatFiled) chatList.get(set).getFirst();
+                if (appeared.contains(chatFiled.getModel())) continue;
+                appeared.add(chatFiled.getModel());
+                arrayList.add(chatFiled);
+            }
+            objectOutputStream.writeObject(arrayList);
             MainJavaFXRunner.init.ChangeValue("CurrentDialogueSpentTokensCount", String.valueOf(ChatFiled.getSpentTotalTokensInThisClass()));
             MainJavaFXRunner.init.Update();
+            log.info("Write Object to File Completed successfully!");
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(Logger.getExceptionMessage(e));
+            log.error("Write not done,thrown Exception(s)");
         }
+        isNeedToSaveObject = false;
     }
 
     public void readObjectFromFile(File file) {
         if (!file.exists()) return;
         //尝试通过反序列化获取上次的状态
+        log.info("Start to reading object from file...");
         try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file))) {
-            chatList = (TreeMap<String, ArrayList<Object>>) objectInputStream.readObject();
+            ArrayList<ChatFiled> source = (ArrayList<ChatFiled>) objectInputStream.readObject();
+            ArrayList<Object> cache = new ArrayList<>();
+            SwingNode swingNode;
+            for (ChatFiled arr : source) {
+                swingNode = new SwingNode();
+                swingNode.setContent(new JScrollPane(arr));
+                cache.add(arr);
+                cache.add(swingNode);
+                cache.add(arr.getMessages());
+                chatList.remove(arr.getModel());
+                chatList.put(arr.getModel(), cache);
+                cache = new ArrayList<>();
+            }
             ChatFiled.setSpentTotalTokensInThisClass(Long.parseLong(MainJavaFXRunner.init.getValue("CurrentDialogueSpentTokensCount").toString()));
+            log.info("Read object to file Completed successfully!");
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(Logger.getExceptionMessage(e));
+            log.error("Read not done,thrown Exception(s)");
+            isNeedToSaveObject = true;
+            saveObjectToFile(file);
         }
     }
 }
