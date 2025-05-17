@@ -1,4 +1,4 @@
-package com.nserly.Tools.Connection.MessageCollections.DeepSeek;
+package com.nserly.Tools.Connection.MessageCollections.DeepSeek.ChatMessage;
 
 import com.google.gson.annotations.SerializedName;
 import com.nserly.Tools.Connection.MessageCollections.SuperReceive;

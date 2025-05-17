@@ -2,7 +2,7 @@ package com.nserly.Controller;
 
 import com.nserly.Logger;
 import com.nserly.MainJavaFXRunner;
-import com.nserly.Tools.Connection.MessageCollections.DeepSeek.GetModelByReceive;
+import com.nserly.Tools.Connection.MessageCollections.DeepSeek.InformationPostOrGet.GetModelByReceive;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

@@ -1,7 +1,7 @@
 package com.nserly.Controller;
 
 import com.nserly.MainJavaFXRunner;
-import com.nserly.Tools.Connection.MessageCollections.DeepSeek.ChatBySend;
+import com.nserly.Tools.Connection.MessageCollections.DeepSeek.ChatMessage.ChatBySend;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;

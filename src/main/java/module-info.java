@@ -26,9 +26,14 @@ module com.nserly.largemodelconnectors {
     opens com.nserly.Graphics to javafx.fxml;
     opens com.nserly.Tools.Connection.MessageCollections to com.google.gson;
     exports com.nserly.Graphics;
-    opens com.nserly.Tools.Connection.MessageCollections.DeepSeek to com.google.gson;
     exports com.nserly;
     opens com.nserly to javafx.fxml;
     opens com.nserly.Controller to javafx.fxml;
     exports com.nserly.Controller;
+    opens com.nserly.Tools.Connection.MessageCollections.DeepSeek.ChatMessage to com.google.gson;
+    opens com.nserly.Tools.Connection.MessageCollections.DeepSeek.InformationPostOrGet to com.google.gson;
+    opens com.nserly.Tools.Connection.MessageCollections.DeepSeek.FunctionCalling to com.google.gson;
+    opens com.nserly.ConnectionManager.DeepSeek.FunctionCallingImplement to com.google.gson;
+    opens com.nserly.Tools.Component to javafx.fxml;
+    exports com.nserly.Tools.Component;
 }

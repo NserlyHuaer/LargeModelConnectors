@@ -1,11 +1,10 @@
 package com.nserly.Controller;
 
-import com.nserly.ConnectionManager.DeepSeek.Manager;
 import com.nserly.Graphics.AlertLikeJOptionPane;
 import com.nserly.Graphics.ChatFiled;
 import com.nserly.Logger;
 import com.nserly.MainJavaFXRunner;
-import com.nserly.Tools.Connection.MessageCollections.DeepSeek.ChatBySend;
+import com.nserly.Tools.Connection.MessageCollections.DeepSeek.ChatMessage.ChatBySend;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
@@ -19,11 +18,9 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
-import javax.swing.Timer;
 import java.io.*;
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.FutureTask;
 
 
 @Slf4j

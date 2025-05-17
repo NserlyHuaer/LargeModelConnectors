@@ -1,8 +1,8 @@
 package com.nserly.ConnectionManager.DeepSeek;
 
 import com.nserly.Tools.Connection.Connection;
-import com.nserly.Tools.Connection.MessageCollections.DeepSeek.CheckBalanceByReceive;
-import com.nserly.Tools.Connection.MessageCollections.DeepSeek.GetModelByReceive;
+import com.nserly.Tools.Connection.MessageCollections.DeepSeek.InformationPostOrGet.CheckBalanceByReceive;
+import com.nserly.Tools.Connection.MessageCollections.DeepSeek.InformationPostOrGet.GetModelByReceive;
 import com.nserly.Tools.Connection.Sender;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package com.nserly.Tools.Connection.MessageCollections.DeepSeek;
+package com.nserly.Tools.Connection.MessageCollections.DeepSeek.InformationPostOrGet;
 
 import com.nserly.Tools.Connection.MessageCollections.SuperReceive;
 import com.nserly.Tools.Connection.Sender;

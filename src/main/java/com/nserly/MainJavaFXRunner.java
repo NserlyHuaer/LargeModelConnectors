@@ -6,7 +6,7 @@ import com.nserly.Controller.LoginController;
 import com.nserly.Controller.MainController;
 import com.nserly.Init.Init;
 import com.nserly.Tools.Connection.Connection;
-import com.nserly.Tools.Connection.MessageCollections.DeepSeek.ChatBySend;
+import com.nserly.Tools.Connection.MessageCollections.DeepSeek.ChatMessage.ChatBySend;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;

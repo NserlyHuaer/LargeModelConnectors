@@ -4,8 +4,8 @@ import com.nserly.Graphics.AlertLikeJOptionPane;
 import com.nserly.Graphics.ChatFiled;
 import com.nserly.Logger;
 import com.nserly.MainJavaFXRunner;
-import com.nserly.Tools.Connection.MessageCollections.DeepSeek.ChatBySend;
-import com.nserly.Tools.Connection.MessageCollections.DeepSeek.CheckBalanceByReceive;
+import com.nserly.Tools.Connection.MessageCollections.DeepSeek.ChatMessage.ChatBySend;
+import com.nserly.Tools.Connection.MessageCollections.DeepSeek.InformationPostOrGet.CheckBalanceByReceive;
 import javafx.fxml.Initializable;
 
 import java.io.IOException;

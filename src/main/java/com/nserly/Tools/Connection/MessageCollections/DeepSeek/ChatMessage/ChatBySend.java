@@ -1,6 +1,5 @@
-package com.nserly.Tools.Connection.MessageCollections.DeepSeek;
+package com.nserly.Tools.Connection.MessageCollections.DeepSeek.ChatMessage;
 
-import com.google.gson.Gson;
 import com.nserly.Tools.Connection.MessageCollections.SuperSend;
 import com.nserly.Tools.Connection.Sender;
 import lombok.Getter;
